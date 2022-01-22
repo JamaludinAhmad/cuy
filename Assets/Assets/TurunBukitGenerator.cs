@@ -51,10 +51,6 @@ public class TurunBukitGenerator : MonoBehaviour
             float y = simpangan * Mathf.Cos(kerapatan * trigonometricTimer) - simpangan;
             maju += Time.deltaTime;
 
-            if(y < 2 * -simpangan + .11111f){
-                trigonometricTimer = 0;
-                awalBukit[sizex - 1] = new Vector2(awalBukit[sizex - 1].x, awalBukit[sizex - 1].y + y);
-            }
             //buat vertex
             verticeslist.Add(new Vector3(awalBukit[sizex - 1].x + maju,awalBukit[sizex - 1].y + y));
             verticeslist.Add(new Vector3(awalBukit[sizex - 1].x + maju,awalBukit[sizex - 1].y + y - 10));
@@ -71,8 +67,15 @@ public class TurunBukitGenerator : MonoBehaviour
             colliderLanjutan.Add(new Vector2(awalBukit[sizex - 1].x + maju,awalBukit[sizex - 1].y + y));
             edge.points = colliderLanjutan.ToArray();
 
-            vert += 2;
+            //jika y sudah dalam titik minimum maka buat trigonometric timer menjadi 0 dan buat genertor akan
+            //melanjutkan titik sebelumnya 
+            if(y < 2 * -simpangan + .11111f){
+                trigonometricTimer = 0;
+                awalBukit[sizex - 1] = new Vector2(awalBukit[sizex - 1].x, awalBukit[sizex - 1].y + y);
+            }
+
             timer = 0;
+            vert += 2;
         mesh.vertices = verticeslist.ToArray();
         mesh.triangles = triangles.ToArray();
     }
